@@ -1,4 +1,3 @@
-#![cfg_attr(feature = "unstable", feature(box_raw))]
 #![deny(missing_docs)]
 
 //! Provides traits that assist with I/O and byte slice conversions involving Plain Old Data.
@@ -40,8 +39,10 @@
 extern crate uninitialized;
 extern crate resize_slice;
 extern crate byteorder;
-extern crate packed as nue_packed;
 extern crate nue_io;
+
+/// Re-export the `packed` crate
+pub extern crate packed;
 
 mod pod;
 
@@ -54,6 +55,3 @@ pub mod endian;
 pub use endian::{Le, Be, Native};
 pub use code::{Encode, Decode};
 pub use pod::Pod;
-
-/// Re-export the `packed` crate
-pub use nue_packed as packed;

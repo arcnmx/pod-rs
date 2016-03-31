@@ -14,7 +14,7 @@ license = "MIT"
 unstable = ["resize-slice/unstable", "packed/unstable"]
 
 [dependencies]
-byteorder = "0.3"
+byteorder = "0.5"
 resize-slice = "0.1"
 
 [dependencies.nue-io]
