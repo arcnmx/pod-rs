@@ -10,21 +10,8 @@ readme = "../README.md"
 keywords = ["nue", "pod", "data", "encode", "endian"]
 license = "MIT"
 
-[features]
-unstable = ["resize-slice/unstable", "packed/unstable"]
-
 [dependencies]
 byteorder = "0.5"
-resize-slice = "0.1"
-
-[dependencies.nue-io]
-version = "0.3"
-path = "../io"
-
-[dependencies.packed]
-version = "0.3"
-path = "../packed"
-
-[dependencies.uninitialized]
-version = "0.0"
-path = "../uninitialized"
+packed = { version = "0.3", path = "../packed" }
+uninitialized = { version = "0.0", path = "../uninitialized" }
+nue-codec = { version = "0.3", path = "../codec", optional = true }

@@ -10,7 +10,7 @@
 //!
 //! ```
 //! use pod::{Pod, Le, Be};
-//! # #[cfg(not(feature = "unstable"))]
+//! # #[cfg(not(feature = "packed/oibit"))]
 //! # mod stable {
 //! # use pod::packed::{Unaligned, Packed};
 //! # unsafe impl Packed for super::Data { }
@@ -31,27 +31,25 @@
 //!     0xde, 0xad, 0xbe, 0xef,
 //! ];
 //!
-//! assert_eq!(cmp, data.as_slice());
+//! assert_eq!(cmp, data.as_bytes());
 //! # }
 //!
 //! ```
 
-extern crate uninitialized;
-extern crate resize_slice;
 extern crate byteorder;
-extern crate nue_io;
+extern crate uninitialized;
 
 /// Re-export the `packed` crate
 pub extern crate packed;
 
-mod pod;
-
-/// I/O traits for POD and other types.
-pub mod code;
-
 /// Containers for primitives
 pub mod endian;
 
+mod pod;
+#[cfg(feature = "nue-codec")]
+mod codec;
+
 pub use endian::{Le, Be, Native};
-pub use code::{Encode, Decode};
 pub use pod::Pod;
+#[cfg(feature = "nue-codec")]
+pub use codec::Codable;

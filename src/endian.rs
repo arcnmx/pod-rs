@@ -135,6 +135,11 @@ pub trait EndianConvert: Aligned {
 }
 
 macro_rules! endian_impl {
+    ($(($($tt:tt)*)),*) => {
+        $(
+            endian_impl! { $($tt)* }
+        )*
+    };
     ($t:ty: $s:expr => $r:ident, $w:ident) => {
         impl EndianConvert for $t {
             #[inline]
@@ -152,14 +157,16 @@ macro_rules! endian_impl {
     };
 }
 
-endian_impl!(u16: 2 => read_u16, write_u16);
-endian_impl!(i16: 2 => read_i16, write_i16);
-endian_impl!(i32: 4 => read_i32, write_i32);
-endian_impl!(u32: 4 => read_u32, write_u32);
-endian_impl!(i64: 8 => read_i64, write_i64);
-endian_impl!(u64: 8 => read_u64, write_u64);
-endian_impl!(f32: 4 => read_f32, write_f32);
-endian_impl!(f64: 8 => read_f64, write_f64);
+endian_impl! {
+    (u16: 2 => read_u16, write_u16),
+    (i16: 2 => read_i16, write_i16),
+    (i32: 4 => read_i32, write_i32),
+    (u32: 4 => read_u32, write_u32),
+    (i64: 8 => read_i64, write_i64),
+    (u64: 8 => read_u64, write_u64),
+    (f32: 4 => read_f32, write_f32),
+    (f64: 8 => read_f64, write_f64)
+}
 
 impl EndianConvert for bool {
     #[inline]
