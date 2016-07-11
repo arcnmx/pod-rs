@@ -12,6 +12,9 @@ readme = "README.md"
 license = "MIT"
 
 [dependencies]
-byteorder = "^0.5.3"
 packed = "^0.4.0"
-uninitialized = "^0.0.2"
+uninitialized = { version = "^0.0.2", optional = true }
+read_exact = { version = "^0.0.1", optional = true }
+
+[features]
+default = ["read_exact", "uninitialized"]
