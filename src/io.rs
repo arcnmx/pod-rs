@@ -22,12 +22,14 @@ pub trait PodReadExt {
 }
 
 impl<T: io::Read> PodReadExt for T {
+    #[inline]
     fn read_pod<P: Pod>(&mut self) -> io::Result<P> {
         let mut data: P = unsafe { uninitialized() };
 
         self.read_exact(data.as_mut_bytes()).map(|_| data)
     }
 
+    #[inline]
     #[cfg(feature = "read_exact")]
     fn read_pod_or_none<P: Pod>(&mut self) -> io::Result<Option<P>> {
         let mut data: P = unsafe { uninitialized() };
@@ -49,6 +51,7 @@ pub trait PodWriteExt {
 }
 
 impl<T: io::Write> PodWriteExt for T {
+    #[inline]
     fn write_pod<P: Pod>(&mut self, data: &P) -> io::Result<()> {
         self.write_all(data.as_bytes())
     }
