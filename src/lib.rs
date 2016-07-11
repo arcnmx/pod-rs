@@ -1,6 +1,7 @@
 #![deny(missing_docs)]
 
-//! Provides traits that assist with I/O and byte slice conversions involving Plain Old Data.
+//! Provides traits that assist with I/O and byte slice conversions involving
+//! Plain Old Data.
 //!
 //! # Safety
 //!
