@@ -1,0 +1,1 @@
+initSidebarItems({"trait":[["Pod","A marker trait indicating that a type is Plain Old Data."],["PodReadExt","An extension trait for reading `Pod` types from `std::io::Read` data streams."],["PodWriteExt","An extension trait for writing `Pod` types to `std::io::Write` data streams."]]});

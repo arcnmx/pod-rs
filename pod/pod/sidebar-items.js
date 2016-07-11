@@ -1,0 +1,1 @@
+initSidebarItems({"trait":[["Pod","A marker trait indicating that a type is Plain Old Data."]]});
