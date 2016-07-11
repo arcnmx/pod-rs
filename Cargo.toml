@@ -4,14 +4,14 @@ version = "0.3.1"
 authors = ["arcnmx"]
 
 description = "Plain Old Data (POD) encoding and I/O"
-documentation = "http://arcnmx.github.io/nue/pod/"
-repository = "https://github.com/arcnmx/nue"
-readme = "../README.md"
 keywords = ["nue", "pod", "data", "encode", "endian"]
+
+documentation = "http://arcnmx.github.io/pod-rs/pod/"
+repository = "https://github.com/arcnmx/pos-rs"
+readme = "README.md"
 license = "MIT"
 
 [dependencies]
-byteorder = "0.5"
-packed = { version = "0.3", path = "../packed" }
-uninitialized = { version = "0.0", path = "../uninitialized" }
-nue-codec = { version = "0.3", path = "../codec", optional = true }
+byteorder = "^0.5.3"
+packed = "^0.4.0"
+uninitialized = "^0.0.2"

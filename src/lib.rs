@@ -46,10 +46,6 @@ pub extern crate packed;
 pub mod endian;
 
 mod pod;
-#[cfg(feature = "nue-codec")]
-mod codec;
 
 pub use endian::{Le, Be, Native};
 pub use pod::Pod;
-#[cfg(feature = "nue-codec")]
-pub use codec::Codable;
