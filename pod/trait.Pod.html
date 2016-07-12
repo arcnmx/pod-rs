@@ -47,7 +47,7 @@
                    <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                        [<span class='inner'>&#x2212;</span>]
                    </a>
-               </span><a id='src-12' class='srclink' href='../src/pod/src/pod.rs.html#9-192' title='goto source code'>[src]</a></span></h1>
+               </span><a id='src-13' class='srclink' href='../src/pod/src/pod.rs.html#9-192' title='goto source code'>[src]</a></span></h1>
 <pre class='rust trait'>pub unsafe trait Pod: <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html' title='core::marker::Sized'>Sized</a> {
     fn <a href='#method.as_aligned_mut' class='fnname'>as_aligned_mut</a>&lt;T: <a class='trait' href='../pod/trait.Pod.html' title='pod::Pod'>Pod</a> + Aligned&lt;Unaligned=Self&gt;&gt;(&amp;mut self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;&amp;mut T&gt; <span class='where'>where Self: <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Copy.html' title='core::marker::Copy'>Copy</a> + Unaligned</span> { ... }
     fn <a href='#method.from_unaligned_mut' class='fnname'>from_unaligned_mut</a>&lt;T: <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Copy.html' title='core::marker::Copy'>Copy</a> + Unaligned&gt;(s: &amp;mut T) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;&amp;mut Self&gt; <span class='where'>where Self: Aligned&lt;Unaligned=T&gt;</span> { ... }
