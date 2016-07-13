@@ -26,7 +26,7 @@ impl<T: io::Read> PodReadExt for T {
     fn read_pod<P: Pod>(&mut self) -> io::Result<P> {
         let mut data: P = unsafe { uninitialized() };
 
-        self.read_exact(data.as_mut_bytes()).map(|_| data)
+        self.read_exact(data.as_bytes_mut()).map(|_| data)
     }
 
     #[inline]
@@ -34,7 +34,7 @@ impl<T: io::Read> PodReadExt for T {
     fn read_pod_or_none<P: Pod>(&mut self) -> io::Result<Option<P>> {
         let mut data: P = unsafe { uninitialized() };
 
-        self.read_exact_or_eof(data.as_mut_bytes()).map(|read| if read {
+        self.read_exact_or_eof(data.as_bytes_mut()).map(|read| if read {
             Some(data)
         } else {
             None
