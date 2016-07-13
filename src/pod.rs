@@ -393,6 +393,30 @@ pub unsafe trait Pod: Sized {
         Pod::map_slice_box(p)
     }
 
+    /// Creates a POD reference with the inverse of `map()`
+    #[inline]
+    fn ref_from<T: Pod>(p: &T) -> Option<&Self> {
+        Pod::map(p)
+    }
+
+    /// Creates a mutable POD reference with the inverse of `map_mut()`
+    #[inline]
+    fn ref_from_mut<T: Pod>(p: &mut T) -> Option<&mut Self> {
+        Pod::map_mut(p)
+    }
+
+    /// Creates a POD reference with the inverse of `merge()`
+    #[inline]
+    fn ref_from_slice<T: Pod>(p: &[T]) -> Option<&Self> {
+        Pod::merge(p)
+    }
+
+    /// Creates a mutable POD reference with the inverse of `merge_mut()`
+    #[inline]
+    fn ref_from_slice_mut<T: Pod>(p: &mut [T]) -> Option<&mut Self> {
+        Pod::merge_mut(p)
+    }
+
     /// Borrows the POD as a byte slice
     #[inline]
     fn as_bytes(&self) -> &[u8] {
@@ -411,6 +435,22 @@ pub unsafe trait Pod: Sized {
     #[inline]
     fn from_bytes(p: &[u8]) -> Option<Self> {
         Self::from_slice(&p)
+    }
+
+    /// Borrows a new instance of the POD from a byte slice
+    ///
+    /// Returns `None` if `slice.len()` is not the same as the type's size
+    #[inline]
+    fn ref_from_bytes(p: &[u8]) -> Option<&Self> {
+        Self::ref_from_slice(p)
+    }
+
+    /// Borrows a mutable instance of the POD from a mutable byte slice
+    ///
+    /// Returns `None` if `slice.len()` is not the same as the type's size
+    #[inline]
+    fn ref_from_bytes_mut(p: &mut [u8]) -> Option<&mut Self> {
+        Self::ref_from_slice_mut(p)
     }
 
     /// Converts a boxed slice to a boxed instance of the POD type
@@ -467,32 +507,6 @@ pub unsafe trait Pod: Sized {
     fn from_unaligned<T: Copy + Unaligned>(s: T) -> Self where Self: Aligned<Unaligned=T> {
         unsafe { Aligned::from_unaligned(s) }
     }
-
-    /*
-    /// Borrows a new instance of the POD from a byte slice
-    ///
-    /// Returns `None` if `slice.len()` is not the same as the type's size
-    #[inline]
-    fn from_bytes_ref<'a>(slice: &'a [u8]) -> Option<&'a Self> where Self: Unaligned {
-        if slice.len() == size_of::<Self>() {
-            Some(unsafe { &*(slice.as_ptr() as *const _) })
-        } else {
-            None
-        }
-    }
-
-    /// Borrows a mutable instance of the POD from a mutable byte slice
-    ///
-    /// Returns `None` if `slice.len()` is not the same as the type's size
-    #[inline]
-    fn from_bytes_mut<'a>(slice: &'a mut [u8]) -> Option<&'a mut Self> where Self: Unaligned {
-        if slice.len() == size_of::<Self>() {
-            Some(unsafe { &mut *(slice.as_mut_ptr() as *mut _) })
-        } else {
-            None
-        }
-    }
-    */
 
     /// Generates a new uninitialized instance of a POD type.
     #[inline]
