@@ -7,6 +7,26 @@ use packed::{Unaligned, Aligned, is_aligned_for, is_aligned_for_slice, size_of_s
 ///
 /// It is unsafe to `impl` this manually, use `#[derive(Pod)]` instead.
 pub unsafe trait Pod: Sized {
+    /// Generates a new uninitialized instance of a POD type.
+    #[inline]
+    unsafe fn uninitialized() -> Self {
+        uninitialized()
+    }
+
+    /// Creates a new zeroed instance of a POD type.
+    #[inline]
+    fn zeroed() -> Self {
+        unsafe { zeroed() }
+    }
+
+    /// Creates a copy of this POD instance
+    #[inline]
+    fn copy(&self) -> Self {
+        unsafe {
+            read(self)
+        }
+    }
+
     /// Converts a POD reference from one to another type of the same size.
     ///
     /// Returns `None` if the two types are misaligned or not the same size.
@@ -38,7 +58,7 @@ pub unsafe trait Pod: Sized {
     fn map_copy<T: Pod>(&self) -> Option<T> {
         if size_of::<T>() == size_of::<Self>() {
             Some(unsafe {
-                Pod::copy_from_ptr(self.as_bytes().as_ptr())
+                Pod::from_ptr(self)
             })
         } else {
             None
@@ -76,7 +96,7 @@ pub unsafe trait Pod: Sized {
     fn try_map_copy<T: Pod>(&self) -> Option<T> {
         if size_of::<T>() <= size_of::<Self>() {
             Some(unsafe {
-                Pod::copy_from_ptr(self.as_bytes().as_ptr())
+                Pod::from_ptr(self)
             })
         } else {
             None
@@ -293,7 +313,7 @@ pub unsafe trait Pod: Sized {
     fn merge_copy<T: Pod>(s: &[Self]) -> Option<T> {
         if size_of_slice(s) == size_of::<T>() {
             Some(unsafe {
-                Pod::copy_from_ptr(s.as_ptr() as _)
+                Pod::from_ptr(s.as_ptr())
             })
         } else {
             None
@@ -331,7 +351,7 @@ pub unsafe trait Pod: Sized {
     fn try_merge_copy<T: Pod>(s: &[Self]) -> Option<T> {
         if size_of_slice(s) <= size_of::<T>() {
             Some(unsafe {
-                Pod::copy_from_ptr(s.as_ptr() as _)
+                Pod::from_ptr(s.as_ptr())
             })
         } else {
             None
@@ -359,6 +379,16 @@ pub unsafe trait Pod: Sized {
     #[inline]
     fn merge_vec<T: Pod>(s: Vec<Self>) -> Result<Box<T>, Vec<Self>> {
         Self::merge_box(s.into_boxed_slice()).map_err(|s| s.into_vec())
+    }
+
+    /// Creates a new POD instance from an unaligned pointer.
+    ///
+    /// This is an unsafe operation because the pointer is not validated in any way.
+    #[inline]
+    unsafe fn from_ptr<T>(source: *const T) -> Self {
+        let mut s = Self::uninitialized();
+        copy_nonoverlapping(source as *const u8, &mut s as *mut _ as _, size_of::<Self>());
+        s
     }
 
     /// Creates a new POD instance with the inverse of `map_copy()`
@@ -481,9 +511,6 @@ pub unsafe trait Pod: Sized {
         Self::split_vec(self).ok().unwrap()
     }
 
-    #[doc(hidden)]
-    fn __assert_pod() { }
-
     /// Safely borrows the aligned value mutably
     ///
     /// See also: `Aligned::from_unaligned_mut`
@@ -508,33 +535,8 @@ pub unsafe trait Pod: Sized {
         unsafe { Aligned::from_unaligned(s) }
     }
 
-    /// Generates a new uninitialized instance of a POD type.
-    #[inline]
-    unsafe fn uninitialized() -> Self {
-        uninitialized()
-    }
-
-    /// Creates a new zeroed instance of a POD type.
-    #[inline]
-    fn zeroed() -> Self {
-        unsafe { zeroed() }
-    }
-
-    /// Creates a copy of this POD instance
-    #[inline]
-    fn copy(&self) -> Self {
-        unsafe {
-            read(self)
-        }
-    }
-
-    /// Creates a copy of this instance from an unaligned pointer
-    #[inline]
-    unsafe fn copy_from_ptr(source: *const u8) -> Self {
-        let mut s = Self::uninitialized();
-        copy_nonoverlapping(source, &mut s as *mut _ as _, size_of::<Self>());
-        s
-    }
+    #[doc(hidden)]
+    fn __assert_pod() { }
 }
 
 unsafe impl Pod for () { }
