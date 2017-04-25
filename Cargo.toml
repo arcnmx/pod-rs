@@ -7,7 +7,7 @@ description = "Plain Old Data (POD) encoding and I/O"
 keywords = ["nue", "pod", "data", "encode", "endian"]
 
 documentation = "http://arcnmx.github.io/pod-rs/pod/"
-repository = "https://github.com/arcnmx/pos-rs"
+repository = "https://github.com/arcnmx/pod-rs"
 readme = "README.md"
 license = "MIT"
 
